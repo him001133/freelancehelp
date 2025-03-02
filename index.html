@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Freelancer Tracker</title>
+    <script>
+        function fetchMilestones() {
+            fetch('fetch_milestones.php')
+                .then(response => response.json())
+                .then(data => {
+                    let list = document.getElementById('milestones');
+                    list.innerHTML = '';
+                    data.forEach(milestone => {
+                        list.innerHTML += `<li>${milestone.description} - $${milestone.amount} - ${milestone.status}</li>`;
+                    });
+                });
+        }
+    </script>
+</head>
+<body>
+    <h1>Freelancer Tracker</h1>
+    <button onclick="fetchMilestones()">Load Milestones</button>
+    <ul id="milestones"></ul>
+</body>
+</html>

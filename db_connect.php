@@ -1,17 +1,18 @@
 <?php
-error_reporting(E_ALL);
-ini_set('display_errors', 1);
+$host = getenv('DB_HOST');
+$dbname = getenv('DB_NAME');
+$user = getenv('DB_USER');
+$pass = getenv('DB_PASS');
+$port = getenv('DB_PORT');
 
-$servername = "sql300.infinityfree.com"; // Replace with actual MySQL host
-$username = "if0_38404209"; // Replace with actual username
-$password = "HtUDsfZDCpHIC3"; // Replace with actual password
-$dbname = "if0_38404209_freelance"; // Replace with actual DB name
-
-$conn = new mysqli($servername, $username, $password, $dbname);
-
-if ($conn->connect_error) {
-    die("Connection failed: " . $conn->connect_error);
-} else {
+try {
+    $dsn = "mysql:host=$host;port=$port;dbname=$dbname;charset=utf8mb4";
+    $pdo = new PDO($dsn, $user, $pass, [
+        PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
+        PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
+    ]);
     echo "Database connected successfully!";
+} catch (PDOException $e) {
+    die("Database connection failed: " . $e->getMessage());
 }
 ?>

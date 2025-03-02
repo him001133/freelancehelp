@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html>
 <head>
@@ -9,12 +8,11 @@
             .then(response => response.json())
             .then(data => {
                 console.log("Milestones:", data);
-                let output = "<ul>";
+                let output = "";
                 data.forEach(milestone => {
-                    output += `<li>${milestone.name} - ₹${milestone.amount}</li>`;  // ✅ Fixed backticks
+                    output += `<li>${milestone.name} - ₹${milestone.amount}</li>`;
                 });
-                output += "</ul>";
-                document.getElementById("milestones").innerHTML = output;  // ✅ Updates only the <ul>
+                document.getElementById("milestones").innerHTML = output;
             })
             .catch(error => console.error("Error fetching milestones:", error));
         }
@@ -27,6 +25,6 @@
 <body>
     <h1>Freelancer Tracker</h1>
     <button id="loadMilestones">Load Milestones</button>
-    <ul id="milestones"></ul>  <!-- ✅ This will be updated -->
+    <ul id="milestones"></ul>
 </body>
 </html>

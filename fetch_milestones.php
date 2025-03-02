@@ -5,8 +5,8 @@ ini_set('display_errors', 1);
 
 header('Content-Type: application/json');
 
-// Include your database connection
-include 'db_connection.php';
+// Include database connection
+include 'db_connection.php'; // Make sure this file exists and is correct
 
 // Fetch milestones from the database
 $query = "SELECT name, amount FROM milestones";
@@ -23,19 +23,9 @@ while ($row = mysqli_fetch_assoc($result)) {
     $milestones[] = $row;
 }
 
+// Close the database connection
+mysqli_close($conn);
+
 // Output JSON
-echo json_encode($milestones);
-?>
-
-<?php
-include 'db_connect.php';
-
-$result = $conn->query("SELECT * FROM milestones");
-$milestones = [];
-
-while ($row = $result->fetch_assoc()) {
-    $milestones[] = $row;
-}
-
 echo json_encode($milestones);
 ?>

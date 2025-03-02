@@ -1,14 +1,25 @@
 <?php
-// Enable error reporting for debugging
-error_reporting(E_ALL);
-ini_set('display_errors', 1);
+ob_start(); // Start output buffering to prevent unwanted output
+header("Content-Type: application/json");
 
-header('Content-Type: application/json');
+// Debugging: Remove any PHP errors from breaking JSON
+error_reporting(E_ALL);
+ini_set('display_errors', 0); // Set to 1 if debugging locally
 
 // Include database connection
-include 'db_connection.php'; // Make sure this file exists and is correct
+if (!file_exists('db_connection.php')) {
+    echo json_encode(["error" => "Database connection file not found"]);
+    exit;
+}
 
-// Fetch milestones from the database
+include 'db_connection.php';
+
+if (!$conn) {
+    echo json_encode(["error" => "Database connection failed: " . mysqli_connect_error()]);
+    exit;
+}
+
+// Fetch milestones
 $query = "SELECT name, amount FROM milestones";
 $result = mysqli_query($conn, $query);
 
@@ -17,15 +28,14 @@ if (!$result) {
     exit;
 }
 
-// Convert to an array
+// Convert to JSON
 $milestones = [];
 while ($row = mysqli_fetch_assoc($result)) {
     $milestones[] = $row;
 }
 
-// Close the database connection
-mysqli_close($conn);
-
-// Output JSON
+// Ensure no extra output before JSON
+ob_clean();
 echo json_encode($milestones);
+exit;
 ?>
